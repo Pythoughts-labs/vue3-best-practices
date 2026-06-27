@@ -1,0 +1,11 @@
+{
+  "skills": ["vue-best-practices"],
+  "query": "Build a Vue 3.5 child component with default prop values that watches a prop and passes it to a composable.",
+  "files": ["src/components/UserCard.vue"],
+  "expected_behavior": [
+    "Uses reactive props destructure with defaults (const { count = 0 } = defineProps...)",
+    "Does NOT use withDefaults",
+    "Wraps the prop in a getter when crossing a function boundary (watch(() => id) / composable(() => id))",
+    "Does not pass a bare destructured prop directly into watch() or a composable"
+  ]
+}

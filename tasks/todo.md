@@ -11,14 +11,19 @@
   - `references/vapor-mode.md` (3.6 beta, flagged experimental, opt-in only)
   - SKILL.md pointers added under section 2 (3.5 APIs) and section 4 (Vapor under perf)
 
-## Out of scope — follow-up (eval-driven validation per AGENTS.md)
+## Eval scaffolding — DONE (stubs)
 
-Each new reference file needs 3 evals × 4 tiers × 3 models. Not done this pass (user chose
-"land docs now, track evals later"). Files needing eval suites:
+Eval specs scaffolded under `evals/suites/skills/...` (6 references × 3 scenarios = 18
+scenarios, 54 files). Each scenario has `eval.json` + starter `eval.ts` + clean input stub.
+See `evals/README.md`. `vapor-mode` intentionally skipped (experimental until 3.6 stable).
 
-- vue-ai-apps: streaming-chat-ui, tool-calling, structured-output, error-handling-and-abort
-- vue-best-practices: reactive-props-destructure, vue-3-5-helpers
-- vapor-mode: experimental — eval only once 3.6 is stable
+## Out of scope — remaining follow-up (per AGENTS.md)
+
+- Eval **runner** (`pnpm eval`) + package: not in this repo commit; needed to execute suites.
+- Per-scenario **build boilerplate** (package.json/vite/tsconfig/index.html/main.ts) so each
+  scenario is a self-contained buildable project the runner can install + build.
+- Then run the matrix: 3 evals × 4 tiers × 3 models per reference (haiku/sonnet/opus), record
+  to `results.json`. Billed LLM runs — user-triggered.
 
 ## Verify-before-trust notes (flagged in the content, confirm against installed SDK)
 

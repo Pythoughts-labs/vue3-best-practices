@@ -1,0 +1,11 @@
+{
+  "skills": ["vue-ai-apps"],
+  "query": "Add a stop button and error handling to a Vue AI chat component built with @ai-sdk/vue.",
+  "files": ["src/components/ChatBox.vue"],
+  "expected_behavior": [
+    "Shows a Stop control that calls stop() while streaming",
+    "Surfaces the error ref in the template",
+    "Offers recovery via regenerate() (optionally clearError())",
+    "Disables send unless status is ready"
+  ]
+}

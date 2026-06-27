@@ -1,0 +1,11 @@
+{
+  "skills": ["vue-ai-apps"],
+  "query": "Build a Vue chat component that streams responses from an LLM using the Vercel AI SDK in a Nuxt app.",
+  "files": ["src/components/ChatBox.vue"],
+  "expected_behavior": [
+    "Imports useChat from '@ai-sdk/vue' (not @ai-sdk/react)",
+    "Renders message.parts, not message.content",
+    "Owns a local input ref and calls sendMessage({ text }) (no hook-managed input/handleSubmit)",
+    "Drives disabled/busy UI from status, not isLoading"
+  ]
+}
