@@ -64,8 +64,10 @@ with-skill (implicit) is nondeterministic headless; with-agents-md embeds SKILL.
 - `with-skill*` tiers copy the local `skills/<name>` into `.claude/skills` (override dir via
   `VUE_SKILLS_DIR`). The earlier `npx skills add` approach was dropped — it installs to
   `.agents/skills`, which headless `claude -p` does not load.
-- AI-SDK doc items to confirm against an installed `@ai-sdk/vue` (useObject export; server return form).
-  Note: `ai@7` / `@ai-sdk/vue@4` are current — the skill documents the v5 API and may need a refresh.
+- AI-SDK doc items: DONE — verified vue-ai-apps against installed `ai@7.0.4` / `@ai-sdk/vue@4.0.4`
+  (skill v1.1.0). Fixes: `useObject` -> `experimental_useObject`; client tools -> `addToolOutput`.
+  Confirmed unchanged: useChat surface, status union, parts, inputSchema, stepCountIs, streamObject,
+  toUIMessageStreamResponse. The v5 API design is stable through v7.
 
 ## Verify-before-trust notes (flagged in the content, confirm against installed SDK)
 
