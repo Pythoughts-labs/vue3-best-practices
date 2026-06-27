@@ -1,12 +1,12 @@
 ---
-title: Abort and Error Handling for AI Streams (AI SDK v5)
+title: Abort and Error Handling for AI Streams (AI SDK v5+)
 impact: HIGH
 impactDescription: A streaming UI with no stop button and no error surface leaves users stuck on hung or failed requests
 type: best-practice
 tags: [vue3, nuxt, ai-sdk, useChat, abort, error-handling, streaming]
 ---
 
-# Abort and Error Handling for AI Streams (AI SDK v5)
+# Abort and Error Handling for AI Streams (AI SDK v5+)
 
 **Impact: HIGH** - LLM streams are long-running and can fail mid-response. `useChat` exposes everything needed — `status`, `stop()`, `error`, `clearError()`, `regenerate()`, and an `onError` option — but none of it is wired up by default. A chat UI is not shippable until the user can stop a runaway generation and recover from an error.
 

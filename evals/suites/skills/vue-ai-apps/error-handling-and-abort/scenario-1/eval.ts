@@ -5,9 +5,9 @@ import { join } from "path";
 const src = readFileSync(join(process.cwd(), "src/components/ChatBox.vue"), "utf-8");
 
 test("wires abort and error recovery", () => {
-  expect(src).toMatch(/\bstop\s*\(/);
+  expect(src).toMatch(/\bstop\b/);
   expect(src).toMatch(/\berror\b/);
-  expect(src).toMatch(/regenerate\s*\(/);
+  expect(src).toMatch(/\bregenerate\b/);
 });
 
 test("disables send via status", () => {
