@@ -1,0 +1,33 @@
+name: Eval smoke
+
+# Dry-builds every eval scenario (no LLM calls) so boilerplate rot —
+# a broken stub, tsconfig, or App.vue shell — fails a PR instead of a paid eval run.
+# Only fires when the eval suite or its harness changes.
+on:
+  pull_request:
+    paths:
+      - 'evals/**'
+      - 'package.json'
+  push:
+    branches: [dev]
+    paths:
+      - 'evals/**'
+      - 'package.json'
+
+permissions:
+  contents: read
+
+jobs:
+  dry:
+    name: Eval dry build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Dry-build all eval scenarios
+        run: pnpm eval --all --dry
