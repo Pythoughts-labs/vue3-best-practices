@@ -1,7 +1,7 @@
 ---
 name: vue-ai-apps
 description: "Building AI/LLM and agent apps with Vue 3 and Nuxt: streaming chat UIs, the Vercel AI SDK (`ai` + `@ai-sdk/vue`), `useChat`, tool calling, structured output, and abort/error handling. Load for AI chatbots, assistant UIs, LLM streaming, or agent frontends in Vue or Nuxt."
-version: "1.0.0"
+version: "1.1.0"
 license: MIT
 author: github.com/Pythoughts-labs
 ---
@@ -16,14 +16,14 @@ Assumes the foundations in `vue-best-practices` (Composition API, `<script setup
 
 - **Keys never reach the client.** The provider API key lives on the server. The browser talks to *your* endpoint, never to the model provider directly.
 - **Server streams, client consumes.** A server route runs `streamText`/`streamObject` and returns a stream; the Vue component renders it incrementally. Never block on the full response.
-- **Render message *parts*, not a content string.** AI SDK v5 messages are `UIMessage[]` made of typed `parts` (text, tool calls, reasoning). Iterate `message.parts`.
+- **Render message *parts*, not a content string.** AI SDK messages are `UIMessage[]` made of typed `parts` (text, tool calls, reasoning). Iterate `message.parts`.
 - **Drive UI from `status`, not a boolean.** Disabled inputs, spinners, and the stop button key off the `status` state machine.
 
 ## 1) Confirm the stack (required)
 
 - Packages: `ai` (core), `@ai-sdk/vue` (composables), a provider (`@ai-sdk/openai`, `@ai-sdk/anthropic`, …), `zod` for tool/object schemas.
 - `useChat` from `@ai-sdk/vue` works against **any** streaming backend. The server snippets here use **Nuxt/Nitro** (`defineEventHandler`, `readBody`); for a non-Nuxt backend, keep the same AI SDK calls in your own route handler.
-- AI SDK **v5** is assumed (messages have `parts`; the hook does not manage input; `status` replaces `isLoading`; tool schemas use `inputSchema`). If the project is on v4, these APIs differ — check the installed version first.
+- This skill targets the **v5+ API**, verified against `ai@7` / `@ai-sdk/vue@4`: messages have `parts`; the hook does not manage input; `status` is `'submitted' | 'streaming' | 'ready' | 'error'`; tool schemas use `inputSchema`; `useObject` is exported as `experimental_useObject`. The pre-v5 API (`ai@4`: `message.content`, hook-managed `input`, `isLoading`, `parameters`) differs — check the installed version first.
 
 ## 2) Build the streaming chat UI (required for chat features)
 

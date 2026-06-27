@@ -1,12 +1,12 @@
 ---
-title: Tool Calling in Vue Chat UIs (AI SDK v5)
+title: Tool Calling in Vue Chat UIs (AI SDK v5+)
 impact: HIGH
 impactDescription: Tool calls arrive as typed message parts with a state machine; ignoring the state renders blank or stale UI
 type: capability
 tags: [vue3, nuxt, ai-sdk, tools, function-calling, agents, useChat]
 ---
 
-# Tool Calling in Vue Chat UIs (AI SDK v5)
+# Tool Calling in Vue Chat UIs (AI SDK v5+)
 
 **Impact: HIGH** - When the model calls a tool, the result surfaces in the chat as a `parts` entry of type `tool-<name>` with a `state` field. The Vue UI must branch on `part.state` (`input-streaming` → `input-available` → `output-available` / `output-error`) to show progress and results. Rendering the part without checking `state` shows nothing while the tool runs, then throws when accessing `part.output` too early.
 
@@ -80,7 +80,7 @@ export default defineEventHandler(async (event) => {
 
 - Part type follows the pattern `tool-${toolName}`; dynamically registered tools use type `dynamic-tool` with `part.toolName`.
 - Useful accessors: `part.input`, `part.output`, `part.toolCallId`, `part.errorText`.
-- **Client-side tools** (a `tool()` with no `execute`) are fulfilled from the UI by calling `addToolResult({ tool, toolCallId, output })` returned by `useChat`.
+- **Client-side tools** (a `tool()` with no `execute`) are fulfilled from the UI by calling `addToolOutput({ tool, toolCallId, output })` returned by `useChat` (`addToolResult` is the deprecated alias).
 - `stepCountIs` / `stopWhen` and the `tool()` signature are core AI SDK API — confirm against the installed version.
 
 ## Reference
