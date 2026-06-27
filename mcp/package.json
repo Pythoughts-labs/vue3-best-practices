@@ -1,6 +1,6 @@
 {
   "name": "@pythoughts/vue-skills-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "MCP server exposing the Vue 3 best-practice skills so any MCP coding agent can fetch them automatically on Vue work.",
   "author": "Mohamed Elkholy (elkaix)",
