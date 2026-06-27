@@ -1,7 +1,7 @@
 ---
 name: vue-ai-apps
 description: "Building AI/LLM and agent apps with Vue 3 and Nuxt: streaming chat UIs, the Vercel AI SDK (`ai` + `@ai-sdk/vue`), `useChat`, tool calling, structured output, and abort/error handling. Load for AI chatbots, assistant UIs, LLM streaming, or agent frontends in Vue or Nuxt."
-version: "1.1.0"
+version: "1.1.1"
 license: MIT
 author: github.com/Pythoughts-labs
 ---
