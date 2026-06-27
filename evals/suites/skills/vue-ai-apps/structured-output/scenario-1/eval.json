@@ -1,0 +1,10 @@
+{
+  "skills": ["vue-ai-apps"],
+  "query": "",
+  "files": ["src/components/RecipeGenerator.vue"],
+  "expected_behavior": [
+    "Uses useObject from @ai-sdk/vue for structured streaming",
+    "Guards partial fields with optional chaining (object?.x) while streaming",
+    "Drives UI from isLoading + submit (useObject surface, not status/sendMessage)"
+  ]
+}

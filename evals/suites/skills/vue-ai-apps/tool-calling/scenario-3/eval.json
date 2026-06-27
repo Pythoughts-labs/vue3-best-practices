@@ -1,0 +1,11 @@
+{
+  "skills": ["vue-ai-apps"],
+  "query": "Show tool-call progress and output inside a Vue AI chat component for a weather tool.",
+  "files": ["src/components/ChatBox.vue"],
+  "expected_behavior": [
+    "Branches a tool part on part.state (input-available / output-available / output-error)",
+    "Reads part.output only in the output-available state",
+    "Uses the tool-<name> part type (e.g. tool-getWeather) or dynamic-tool",
+    "Does not access part.output unconditionally"
+  ]
+}
