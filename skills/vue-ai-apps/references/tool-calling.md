@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
 
   const result = streamText({
     model: openai('gpt-4o'),
-    messages: convertToModelMessages(messages),
+    messages: await convertToModelMessages(messages),
     stopWhen: stepCountIs(5), // let the model use a tool then answer
     tools: {
       getWeather: tool({

@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
 
   const result = streamText({
     model: openai('gpt-4o'),
-    messages: convertToModelMessages(messages),
+    messages: await convertToModelMessages(messages),
   })
 
   // Standard v5 streaming response. (The Nuxt template also shows a
@@ -94,6 +94,7 @@ function send() {
 - `useChat` returns Vue refs (`messages.value`, `status.value`); templates unwrap them automatically.
 - `status` values: `'submitted'` (sent, awaiting first token) → `'streaming'` (receiving) → `'ready'` (done) → `'error'`. Treat `submitted` + `streaming` as busy.
 - `sendMessage` also accepts files/attachments and per-call options; `text` is the common case.
+- `convertToModelMessages` is **async in `ai@7`** (returns `Promise<ModelMessage[]>`); `await` it. It was synchronous in early v5 — copying old code drops the `await` and passes a Promise to `streamText`.
 - The core `streamText` signature can change between AI SDK minors — verify against the installed version rather than copying blindly.
 
 ## Reference
