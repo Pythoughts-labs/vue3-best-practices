@@ -4,7 +4,7 @@ description: MUST be used for Vue.js tasks. Strongly recommends Composition API 
 license: MIT
 metadata:
   author: github.com/Pythoughts-labs
-  version: "18.1.0"
+  version: "18.2.0"
 ---
 
 # Vue Best Practices Workflow
@@ -102,6 +102,11 @@ Entry/root and route view rule:
 - Keep composable APIs small, typed, and predictable.
 - Separate feature logic from presentational components.
 
+### Vue 3.5+ APIs (apply on Vue 3.5 or newer)
+
+- Prefer destructure defaults over `withDefaults()`; mind the getter-boundary rule -> [reactive-props-destructure](references/reactive-props-destructure.md)
+- Use 3.5 built-ins before hand-rolling: `useId`, `onWatcherCleanup`, `<Teleport defer>`, lazy hydration -> [vue-3-5-helpers](references/vue-3-5-helpers.md)
+
 ## 3) Consider optional features only when requirements call for them
 
 ### 3.1 Standard optional features
@@ -137,6 +142,8 @@ Performance work is a post-functionality pass. Do not optimize before core behav
 - Static subtrees re-rendering unnecessarily -> [perf-v-once-v-memo-directives](references/perf-v-once-v-memo-directives.md)
 - Over-abstraction in hot list paths -> [perf-avoid-component-abstraction-in-lists](references/perf-avoid-component-abstraction-in-lists.md)
 - Expensive updates triggered too often -> [updated-hook-performance](references/updated-hook-performance.md)
+
+Experimental: a measured rendering hotspot may justify Vapor Mode (Vue 3.6, opt-in, unstable) -> [vapor-mode](references/vapor-mode.md). Do not enable by default.
 
 ## 5) Final self-check before finishing
 
