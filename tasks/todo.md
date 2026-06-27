@@ -24,6 +24,36 @@ See `evals/README.md`. `vapor-mode` intentionally skipped (experimental until 3.
 - Verified: `pnpm eval <ref> --dry` (install+build) passes; arg validation; results.json I/O.
 - On `main` (PR #5) and `dev`.
 
+## Eval matrix run — RESULTS (sonnet, 18 scenarios × 4 tiers)
+
+Tier pass totals: baseline 3/18 · with-skill 6/18 · **with-skill-prompt 11/18** · with-agents-md 5/18
+
+Per reference (baseline → skill-prompt):
+- vue-ai-apps/error-handling-and-abort: 0/3 → **3/3**
+- vue-ai-apps/streaming-chat-ui:        0/3 → **3/3**
+- vue-ai-apps/structured-output:        0/3 → 2/3   (s1 fails all tiers — brittle assertion)
+- vue-ai-apps/tool-calling:             0/3 → 2/3   (s3 fails all tiers — brittle assertion)
+- vue-best-practices/reactive-props:    3/3 → 1/3   (see below)
+- vue-best-practices/vue-3-5-helpers:   0/3 → 0/3   (unexplained — see below)
+
+Headline: where the eval is well-formed (vue-ai-apps), the skill is a clean win —
+baseline 0/12, skill-prompt 10/12. `with-skill` (implicit) is nondeterministic headless;
+`with-agents-md` is weaker (embeds SKILL.md only, not reference files).
+
+Harness bugs found + fixed during the run (committed):
+- skill tiers installed to .agents/skills (not loaded by claude -p) → copy to .claude/skills
+- prompt didn't name the target file → agent wrote elsewhere, stub stayed empty
+- eval.ts not discovered by vitest → copy in as eval.test.ts
+- AI scenarios couldn't build (SDK not installed, ai@7 churn) → shim + vue-tsc-only + noImplicitAny off
+- App.vue rendered <Subject/> with no props → required-prop components failed vue-tsc → minimal App shell
+
+Known eval-design issues NOT fixed (out of chosen scope):
+- reactive-props: pattern is now default model behavior (baseline passes); `not /withDefaults/`
+  assertion is brittle — skill-informed agents mention withDefaults in a comment and fail.
+- vue-3-5-helpers: all tiers fail though a hand-written correct useId component builds + passes;
+  needs a --verbose run to capture generated output and the real cause.
+- structured-output/s1, tool-calling/s3: fail all tiers — brittle/scenario-specific assertions.
+
 ## Out of scope — remaining follow-up
 
 - **Run the matrix** (billed, user-triggered): `pnpm eval --all` → 4 tiers × 3 models per

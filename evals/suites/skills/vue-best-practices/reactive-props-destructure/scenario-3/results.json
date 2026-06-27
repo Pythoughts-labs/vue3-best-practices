@@ -1,22 +1,22 @@
 {
   "sonnet": {
-    "timestamp": "2026-06-27T20:29:20.377Z",
+    "timestamp": "2026-06-27T21:13:12.872Z",
     "tiers": {
       "baseline": {
         "passed": true,
-        "duration": 88390
+        "duration": 68341
       },
       "with-skill": {
         "passed": true,
-        "duration": 95541
+        "duration": 100894
       },
       "with-skill-prompt": {
         "passed": false,
-        "duration": 102177
+        "duration": 57396
       },
       "with-agents-md": {
         "passed": true,
-        "duration": 88234
+        "duration": 855487
       }
     }
   }
