@@ -1,7 +1,11 @@
 {
-  "skills": ["vue-ai-apps"],
-  "query": "Create a streaming AI chat box in Vue with an input field and a list of messages from an assistant.",
-  "files": ["src/components/ChatBox.vue"],
+  "skills": [
+    "vue-ai-apps"
+  ],
+  "query": "Implement a Vue component that talks to a /api/chat streaming endpoint and renders the assistant reply token by token.",
+  "files": [
+    "src/components/ChatBox.vue"
+  ],
   "expected_behavior": [
     "Imports useChat from '@ai-sdk/vue' (not @ai-sdk/react)",
     "Renders message.parts, not message.content",

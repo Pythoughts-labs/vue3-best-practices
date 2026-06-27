@@ -1,7 +1,11 @@
 {
-  "skills": ["vue-best-practices"],
-  "query": "",
-  "files": ["src/components/UserCard.vue"],
+  "skills": [
+    "vue-best-practices"
+  ],
+  "query": "Create a Vue 3.5 component that takes an 'id' prop, gives 'count' a default of 0, and refetches a user whenever id changes.",
+  "files": [
+    "src/components/UserCard.vue"
+  ],
   "expected_behavior": [
     "Uses reactive props destructure with defaults (const { count = 0 } = defineProps...)",
     "Does NOT use withDefaults",
