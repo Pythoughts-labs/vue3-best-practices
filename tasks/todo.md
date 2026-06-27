@@ -69,6 +69,22 @@ with-skill (implicit) is nondeterministic headless; with-agents-md embeds SKILL.
   Confirmed unchanged: useChat surface, status union, parts, inputSchema, stepCountIs, streamObject,
   toUIMessageStreamResponse. The v5 API design is stable through v7.
 
+## Server-example build-check vs ai@7 — DONE (skill v1.1.0 → 1.1.1)
+
+Typechecked the full claimed API surface (server + client) against installed
+`ai@7.0.4` / `@ai-sdk/vue@4.0.4` / `@ai-sdk/openai@2` (scratch `tsc --noEmit`, strict).
+
+Result: surface is correct EXCEPT one real bug — `convertToModelMessages` is **async
+in ai@7** (`Promise<ModelMessage[]>`), but both server snippets called it without
+`await`, passing a Promise to `streamText` (type error + runtime break).
+
+Fixed: `streaming-chat-ui.md` + `tool-calling.md` now `await convertToModelMessages(...)`;
+added a Notes line flagging the async change. Everything else verified live and clean:
+`streamText().toUIMessageStreamResponse()`, `tool({inputSchema})`, `stepCountIs` as
+`stopWhen`, `streamObject().toTextStreamResponse()`, `useChat` returning
+`sendMessage/status/error/stop/clearError/regenerate/addToolOutput`, `status` union,
+`message.parts`, `experimental_useObject` → `object/submit/isLoading` (DeepPartial).
+
 ## Verify-before-trust notes (flagged in the content, confirm against installed SDK)
 
 - `@ai-sdk/vue` `useObject` export name (`useObject` vs `experimental_useObject`) — page only showed React import.
