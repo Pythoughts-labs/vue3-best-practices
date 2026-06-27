@@ -17,13 +17,21 @@ Eval specs scaffolded under `evals/suites/skills/...` (6 references × 3 scenari
 scenarios, 54 files). Each scenario has `eval.json` + starter `eval.ts` + clean input stub.
 See `evals/README.md`. `vapor-mode` intentionally skipped (experimental until 3.6 stable).
 
-## Out of scope — remaining follow-up (per AGENTS.md)
+## Eval runner — DONE
 
-- Eval **runner** (`pnpm eval`) + package: not in this repo commit; needed to execute suites.
-- Per-scenario **build boilerplate** (package.json/vite/tsconfig/index.html/main.ts) so each
-  scenario is a self-contained buildable project the runner can install + build.
-- Then run the matrix: 3 evals × 4 tiers × 3 models per reference (haiku/sonnet/opus), record
-  to `results.json`. Billed LLM runs — user-triggered.
+- `evals/runner.mjs` + root `package.json` (`pnpm eval`) — implements the AGENTS.md flow.
+- Per-scenario Vue+Vite+Vitest boilerplate added; every scenario builds standalone.
+- Verified: `pnpm eval <ref> --dry` (install+build) passes; arg validation; results.json I/O.
+- On `main` (PR #5) and `dev`.
+
+## Out of scope — remaining follow-up
+
+- **Run the matrix** (billed, user-triggered): `pnpm eval --all` → 4 tiers × 3 models per
+  scenario, recorded to `results.json`. Requires the `claude` CLI + API budget.
+  The four LLM tiers are not exercised in CI and are unverified beyond `--dry`.
+- `with-skill*` tiers install via `npx skills add $VUE_SKILLS_SOURCE`
+  (default `Pythoughts-labs/vue3-best-practices`) — confirm resolution in the target env.
+- AI-SDK doc items to confirm against an installed `@ai-sdk/vue` (useObject export; server return form).
 
 ## Verify-before-trust notes (flagged in the content, confirm against installed SDK)
 
