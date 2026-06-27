@@ -1,0 +1,10 @@
+{
+  "name": "vue3-skills",
+  "private": true,
+  "type": "module",
+  "description": "Vue 3 best-practice skills — eval runner entrypoint.",
+  "license": "MIT",
+  "scripts": {
+    "eval": "node evals/runner.mjs"
+  }
+}

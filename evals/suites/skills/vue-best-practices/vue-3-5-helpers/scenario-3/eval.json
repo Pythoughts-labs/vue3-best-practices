@@ -1,7 +1,11 @@
 {
-  "skills": ["vue-best-practices"],
-  "query": "Create a Vue 3.5 component that renders a label and input wired together with an id that is stable across SSR and client.",
-  "files": ["src/components/SignupField.vue"],
+  "skills": [
+    "vue-best-practices"
+  ],
+  "query": "Make an SSR-safe Vue 3.5 labelled input using the built-in id helper instead of a hand-rolled counter.",
+  "files": [
+    "src/components/SignupField.vue"
+  ],
   "expected_behavior": [
     "Imports and uses useId() from vue for the field id",
     "Binds :for and :id to the same generated id",
