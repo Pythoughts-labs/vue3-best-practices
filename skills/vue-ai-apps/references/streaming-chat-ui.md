@@ -1,12 +1,12 @@
 ---
-title: Streaming Chat UI with useChat (AI SDK v5)
+title: Streaming Chat UI with useChat (AI SDK v5+)
 impact: HIGH
 impactDescription: Rendering message.content or managing input inside the hook is the v4 API and silently breaks in v5
 type: capability
 tags: [vue3, nuxt, ai-sdk, useChat, streaming, llm, chat]
 ---
 
-# Streaming Chat UI with useChat (AI SDK v5)
+# Streaming Chat UI with useChat (AI SDK v5+)
 
 **Impact: HIGH** - In AI SDK v5 the Vue `useChat` composable no longer manages the input field, exposes `status` instead of `isLoading`, and returns messages as `UIMessage[]` built from typed `parts`. Code written for v4 (`input`, `handleSubmit`, `message.content`, `isLoading`) compiles but renders nothing useful.
 

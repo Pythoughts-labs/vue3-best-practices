@@ -1,12 +1,12 @@
 ---
-title: Streaming Structured Output in Vue (AI SDK v5)
+title: Streaming Structured Output in Vue (AI SDK v5+)
 impact: MEDIUM
 impactDescription: Use streamObject + useObject for typed data; the object streams in partial, so the UI must tolerate undefined fields
 type: capability
 tags: [vue3, nuxt, ai-sdk, streamObject, useObject, structured-output, zod]
 ---
 
-# Streaming Structured Output in Vue (AI SDK v5)
+# Streaming Structured Output in Vue (AI SDK v5+)
 
 **Impact: MEDIUM** - When the model should return a typed object (a recipe, a form, an extraction) rather than chat, use `streamObject` on the server and the `useObject` composable on the client. The object arrives **incrementally as a deep-partial**, so every field can be `undefined` mid-stream. Templates must guard with optional chaining and `v-if`, or they throw while streaming.
 
@@ -18,7 +18,7 @@ tags: [vue3, nuxt, ai-sdk, streamObject, useObject, structured-output, zod]
 - [ ] Return `result.toTextStreamResponse()`
 - [ ] Drive the UI from `useObject`'s `object`, `submit`, `isLoading`
 - [ ] Treat every field of `object` as possibly `undefined` while streaming
-- [ ] Verify the exact `useObject` export name in your installed `@ai-sdk/vue`
+- [ ] Import it as `experimental_useObject` (aliased to `useObject`) from `@ai-sdk/vue`
 
 **Incorrect - assuming the object is complete:**
 ```vue
@@ -55,10 +55,8 @@ export default defineEventHandler(async (event) => {
 **Correct - component:**
 ```vue
 <script setup lang="ts">
-// Verify the export name against the installed @ai-sdk/vue:
-// it is exposed as `useObject` (cross-framework convention aliases
-// it as `experimental_useObject`).
-import { useObject } from '@ai-sdk/vue'
+// @ai-sdk/vue exports this only as `experimental_useObject` — alias it on import.
+import { experimental_useObject as useObject } from '@ai-sdk/vue'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -81,7 +79,7 @@ const { object, submit, isLoading } = useObject({ api: '/api/recipe', schema })
 
 ## Notes
 
-- `useObject` is experimental and available for React, Svelte, and **Vue**. The reference docs page only prints the React import, so confirm the Vue export name (`useObject` vs `experimental_useObject`) in `node_modules/@ai-sdk/vue` for your version.
+- The composable is experimental; `@ai-sdk/vue` exports it as `experimental_useObject` (no plain `useObject`). Verified against `@ai-sdk/vue@4` (with `ai@7`).
 - `object` is typed as `DeepPartial<Schema>` — TypeScript already forces the optional-chaining discipline above.
 - For free-form text streaming use `useChat` (or `useCompletion`); reach for `useObject` only when you need a validated shape.
 

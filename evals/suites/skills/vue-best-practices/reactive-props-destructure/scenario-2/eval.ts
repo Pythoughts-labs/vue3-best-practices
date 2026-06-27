@@ -3,14 +3,16 @@ import { readFileSync } from "fs";
 import { join } from "path";
 
 const src = readFileSync(join(process.cwd(), "src/components/UserCard.vue"), "utf-8");
+// Strip JS comments so a comment that *mentions* withDefaults (the skill teaches
+// "destructure replaces withDefaults") doesn't trip the negative check below.
+const code = src.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "");
 
 test("uses destructure defaults, not withDefaults", () => {
-  expect(src).toMatch(/const\s*\{[^}]*=[^}]*\}\s*=\s*defineProps/);
-  expect(src).not.toMatch(/withDefaults\s*\(/);
+  expect(code).toMatch(/const\s*\{[^}]*=[^}]*\}\s*=\s*defineProps/);
+  expect(code).not.toMatch(/withDefaults\s*\(/);
 });
 
 test("preserves reactivity with a getter across the function boundary", () => {
-  // watch the prop via a getter, not the bare value
-  expect(src).toMatch(/watch\(\s*\(\)\s*=>/);
-  expect(src).not.toMatch(/watch\(\s*id\b/);
+  expect(code).toMatch(/watch\(\s*\(\)\s*=>/);
+  expect(code).not.toMatch(/watch\(\s*id\b/);
 });
