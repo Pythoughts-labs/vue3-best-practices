@@ -85,6 +85,20 @@ added a Notes line flagging the async change. Everything else verified live and 
 `sendMessage/status/error/stop/clearError/regenerate/addToolOutput`, `status` union,
 `message.parts`, `experimental_useObject` → `object/submit/isLoading` (DeepPartial).
 
+## CI eval smoke check — DONE
+
+`.github/workflows/eval-smoke.yml`: runs `pnpm eval --all --dry` (no LLM, no cost) on PRs/pushes
+touching `evals/**` or `package.json`. Catches stub/tsconfig/App.vue boilerplate rot before a paid
+eval run hits it. Verified green in CI (run 28305488229, all 18 dry builds OK). Separate workflow so
+doc-only PRs don't pay the Vue-install cost. In `.github/` → reaches main on next sync (needed there
+for it to run on PRs into main).
+
+Known non-blocking: `pnpm/action-setup@v4` emits a Node-20-deprecation annotation (job still passes).
+
+Out-of-scope spotted (not fixed): `evals/README.md` "Verified vs requires budget" still says the
+`with-skill*` tiers install via `npx skills add $VUE_SKILLS_SOURCE`; the runner now copies local
+`skills/` into `.claude/skills`. Stale doc line, harmless.
+
 ## Verify-before-trust notes (flagged in the content, confirm against installed SDK)
 
 - `@ai-sdk/vue` `useObject` export name (`useObject` vs `experimental_useObject`) — page only showed React import.
