@@ -1,0 +1,40 @@
+<svg width="1280" height="300" viewBox="0 0 1280 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="vue3-best-practices - agent skills that teach AI current Vue 3 patterns">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e1a24"/>
+      <stop offset="1" stop-color="#15242f"/>
+    </linearGradient>
+    <clipPath id="frame">
+      <rect width="1280" height="300" rx="16"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <rect width="1280" height="300" fill="url(#bg)"/>
+
+    <!-- faint brand watermark, right side -->
+    <g transform="translate(936 6) scale(1.04)" opacity="0.06">
+      <polygon points="0,0 80,0 160,138.564 240,0 320,0 160,277.128" fill="#42b883"/>
+    </g>
+
+    <!-- Vue mark (canonical two-polygon geometry) -->
+    <g transform="translate(80 86) scale(0.46)">
+      <polygon points="0,0 80,0 160,138.564 240,0 320,0 160,277.128" fill="#42b883"/>
+      <polygon points="80,0 160,138.564 240,0 200,0 160,69.282 120,0" fill="#35495e"/>
+    </g>
+
+    <!-- wordmark -->
+    <text x="272" y="142" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="58" font-weight="800" fill="#eef3f5" letter-spacing="-1">vue3-best-practices</text>
+
+    <!-- accent rule -->
+    <rect x="274" y="160" width="78" height="4" rx="2" fill="#42b883"/>
+
+    <!-- tagline -->
+    <text x="274" y="200" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="500" fill="#9fb1bd">Agent skills that teach AI current Vue 3 patterns</text>
+
+    <!-- meta -->
+    <text x="274" y="238" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#42b883">8 skills + MCP server  -  Composition API, Router, Pinia, Testing, JSX</text>
+
+    <rect x="0.5" y="0.5" width="1279" height="299" rx="16" fill="none" stroke="#2a3b48" stroke-width="1"/>
+  </g>
+</svg>

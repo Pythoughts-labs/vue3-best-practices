@@ -1,0 +1,76 @@
+name: Sync to Main
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "sync" to confirm'
+        required: true
+        default: ''
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'sync'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync files to main
+        id: sync
+        run: |
+          # Make sure we have up-to-date refs
+          git fetch origin main dev
+
+          # Start from main
+          git checkout main
+          git pull --ff-only origin main
+
+          # Create a new branch for the sync
+          BRANCH="sync/dev-to-main-$(date +%Y%m%d%H%M%S)"
+          git checkout -b "$BRANCH"
+
+          # Create a merge commit, but don't commit yet
+          git merge --no-ff --no-commit origin/dev
+
+          # Reset everything back to main...
+          git restore --source=ORIG_HEAD --staged --worktree -- .
+
+          # ...then re-apply only whitelisted paths from dev
+          git restore --source=origin/dev --staged --worktree -- \
+            skills/ .github/ .claude-plugin/ README.md AGENTS.md CLAUDE.md LICENSE
+
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to sync"
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git commit -m "sync: merge dev into main"
+          git push -u origin "$BRANCH"
+
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request
+        if: steps.sync.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "${{ steps.sync.outputs.branch }}" \
+            --title "sync: update from dev branch" \
+            --body "Automated sync of selected files from \`dev\` into \`main\`."

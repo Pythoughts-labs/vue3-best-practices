@@ -1,0 +1,12 @@
+node_modules/
+# Skills bundled into the npm package at pack time (see mcp/package.json prepack)
+mcp/skills/
+*.log
+npm-debug.log*
+.DS_Store
+.env
+.env.local
+dist/
+build/
+coverage/
+*.tgz

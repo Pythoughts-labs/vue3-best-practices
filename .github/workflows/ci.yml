@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+
+# Least privilege: these jobs only read the checkout.
+permissions:
+  contents: read
+
+jobs:
+  validate-skills:
+    name: Validate skills
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Run skill structure tests
+        run: node --test scripts/validate-skills.test.mjs
+
+  mcp:
+    name: MCP server
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: mcp/package-lock.json
+      - name: Install MCP dependencies
+        run: npm ci
+        working-directory: mcp
+      - name: Security audit
+        run: npm audit --audit-level=high
+        working-directory: mcp
+      - name: Run MCP smoke test
+        run: npm test
+        working-directory: mcp
