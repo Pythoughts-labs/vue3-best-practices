@@ -58,12 +58,14 @@ with-skill (implicit) is nondeterministic headless; with-agents-md embeds SKILL.
 
 ## Out of scope — remaining follow-up
 
-- **Run the matrix** (billed, user-triggered): `pnpm eval --all` → 4 tiers × 3 models per
-  scenario, recorded to `results.json`. Requires the `claude` CLI + API budget.
-  The four LLM tiers are not exercised in CI and are unverified beyond `--dry`.
-- `with-skill*` tiers install via `npx skills add $VUE_SKILLS_SOURCE`
-  (default `Pythoughts-labs/vue3-best-practices`) — confirm resolution in the target env.
+- Matrix run for **sonnet** is complete (above). haiku/opus not run (billed, user-triggered).
+- `structured-output/s1` and `tool-calling/s3` are recorded misses (generation variance, fair
+  assertions). Could be re-rolled but not "fixed".
+- `with-skill*` tiers copy the local `skills/<name>` into `.claude/skills` (override dir via
+  `VUE_SKILLS_DIR`). The earlier `npx skills add` approach was dropped — it installs to
+  `.agents/skills`, which headless `claude -p` does not load.
 - AI-SDK doc items to confirm against an installed `@ai-sdk/vue` (useObject export; server return form).
+  Note: `ai@7` / `@ai-sdk/vue@4` are current — the skill documents the v5 API and may need a refresh.
 
 ## Verify-before-trust notes (flagged in the content, confirm against installed SDK)
 
