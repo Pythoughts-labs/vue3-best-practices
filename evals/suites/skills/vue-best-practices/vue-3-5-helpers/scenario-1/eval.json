@@ -1,7 +1,11 @@
 {
-  "skills": ["vue-best-practices"],
-  "query": "",
-  "files": ["src/components/SignupField.vue"],
+  "skills": [
+    "vue-best-practices"
+  ],
+  "query": "Build an accessible Vue 3.5 form field where the label is correctly linked to the input with a unique, SSR-safe id.",
+  "files": [
+    "src/components/SignupField.vue"
+  ],
   "expected_behavior": [
     "Imports and uses useId() from vue for the field id",
     "Binds :for and :id to the same generated id",

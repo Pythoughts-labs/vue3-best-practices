@@ -1,7 +1,11 @@
 {
-  "skills": ["vue-ai-apps"],
-  "query": "In a Vue chat UI, render an LLM tool call (getWeather) including its loading and result states using the AI SDK v5.",
-  "files": ["src/components/ChatBox.vue"],
+  "skills": [
+    "vue-ai-apps"
+  ],
+  "query": "Show tool-call progress and output inside a Vue AI chat component for a weather tool.",
+  "files": [
+    "src/components/ChatBox.vue"
+  ],
   "expected_behavior": [
     "Branches a tool part on part.state (input-available / output-available / output-error)",
     "Reads part.output only in the output-available state",

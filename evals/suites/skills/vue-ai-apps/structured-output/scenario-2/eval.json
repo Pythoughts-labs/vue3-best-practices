@@ -1,7 +1,11 @@
 {
-  "skills": ["vue-ai-apps"],
-  "query": "Build a Vue component that streams a typed recipe object from an LLM and renders it as it arrives.",
-  "files": ["src/components/RecipeGenerator.vue"],
+  "skills": [
+    "vue-ai-apps"
+  ],
+  "query": "Use the AI SDK to stream a structured object in Vue and display partial fields safely while loading.",
+  "files": [
+    "src/components/RecipeGenerator.vue"
+  ],
   "expected_behavior": [
     "Uses useObject from @ai-sdk/vue for structured streaming",
     "Guards partial fields with optional chaining (object?.x) while streaming",
