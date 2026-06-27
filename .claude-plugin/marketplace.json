@@ -9,7 +9,7 @@
     {
       "name": "vue-skills-bundle",
       "source": "./",
-      "description": "Install all Vue.js skills at once, including best practices, testing, router, Pinia, JSX, Options API, and debug guides."
+      "description": "Install all Vue.js skills at once, including best practices, testing, router, Pinia, JSX, Options API, debug guides, and AI apps."
     },
     {
       "name": "vue-best-practices",
@@ -45,6 +45,11 @@
       "name": "vue-testing-best-practices",
       "source": "./skills/vue-testing-best-practices",
       "description": "Use for Vue.js testing. Covers Vitest, Vue Test Utils, component testing, mocking, testing patterns, and Playwright for E2E testing."
+    },
+    {
+      "name": "vue-ai-apps",
+      "source": "./skills/vue-ai-apps",
+      "description": "Building AI/LLM and agent apps with Vue 3 and Nuxt: streaming chat UIs, the Vercel AI SDK, useChat, tool calling, structured output, and abort/error handling."
     }
   ]
 }

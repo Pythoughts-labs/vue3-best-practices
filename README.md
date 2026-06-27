@@ -134,6 +134,7 @@ claude mcp add vue-skills -- node <REPO>/mcp/index.mjs
 | **vue-testing-best-practices** | Component or E2E tests | Vitest, Vue Test Utils, Playwright |
 | **vue-jsx-best-practices** | JSX in Vue | Syntax differences from React JSX, plugin config |
 | **vue-debug-guides** | Debugging Vue 3 | Runtime errors, warnings, async failures, hydration issues |
+| **vue-ai-apps** | AI/LLM & agent apps in Vue/Nuxt | Streaming chat UIs, Vercel AI SDK, `useChat`, tool calling, structured output |
 
 ## How it works
 
