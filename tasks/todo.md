@@ -24,35 +24,37 @@ See `evals/README.md`. `vapor-mode` intentionally skipped (experimental until 3.
 - Verified: `pnpm eval <ref> --dry` (install+build) passes; arg validation; results.json I/O.
 - On `main` (PR #5) and `dev`.
 
-## Eval matrix run — RESULTS (sonnet, 18 scenarios × 4 tiers)
+## Eval matrix run — RESULTS (sonnet, 18 scenarios x 4 tiers) — CORRECTED
 
-Tier pass totals: baseline 3/18 · with-skill 6/18 · **with-skill-prompt 11/18** · with-agents-md 5/18
+Tier pass totals: baseline 5/18 | with-skill 10/18 | **with-skill-prompt 16/18** | with-agents-md 9/18
 
-Per reference (baseline → skill-prompt):
-- vue-ai-apps/error-handling-and-abort: 0/3 → **3/3**
-- vue-ai-apps/streaming-chat-ui:        0/3 → **3/3**
-- vue-ai-apps/structured-output:        0/3 → 2/3   (s1 fails all tiers — brittle assertion)
-- vue-ai-apps/tool-calling:             0/3 → 2/3   (s3 fails all tiers — brittle assertion)
-- vue-best-practices/reactive-props:    3/3 → 1/3   (see below)
-- vue-best-practices/vue-3-5-helpers:   0/3 → 0/3   (unexplained — see below)
+Per reference (baseline -> skill-prompt):
+- vue-ai-apps/error-handling-and-abort: 0/3 -> **3/3**
+- vue-ai-apps/streaming-chat-ui:        0/3 -> **3/3**
+- vue-ai-apps/structured-output:        0/3 -> 2/3   (s1: generation variance, assertion validated fair)
+- vue-ai-apps/tool-calling:             0/3 -> 2/3   (s3: generation variance, assertion validated fair)
+- vue-best-practices/reactive-props:    2/3 -> **3/3**  (after assertion + App.vue fixes)
+- vue-best-practices/vue-3-5-helpers:   3/3 -> **3/3**  (after App.vue fix)
 
-Headline: where the eval is well-formed (vue-ai-apps), the skill is a clean win —
-baseline 0/12, skill-prompt 10/12. `with-skill` (implicit) is nondeterministic headless;
-`with-agents-md` is weaker (embeds SKILL.md only, not reference files).
+Interpretation:
+- vue-ai-apps: strong, clean win. The model cannot produce AI SDK v5 patterns without
+  the skill (baseline 0/12); with the skill invoked it succeeds (10/12). The skill earns
+  its keep most here (recent/niche API).
+- vue-best-practices: reactive-props-destructure and useId are mainstream enough that
+  baseline often already passes; the skill keeps 6/6 and does no harm, but the baseline gap
+  is small. Skill value is highest for newer APIs, lower for patterns the model already knows.
 
-Harness bugs found + fixed during the run (committed):
-- skill tiers installed to .agents/skills (not loaded by claude -p) → copy to .claude/skills
-- prompt didn't name the target file → agent wrote elsewhere, stub stayed empty
-- eval.ts not discovered by vitest → copy in as eval.test.ts
-- AI scenarios couldn't build (SDK not installed, ai@7 churn) → shim + vue-tsc-only + noImplicitAny off
-- App.vue rendered <Subject/> with no props → required-prop components failed vue-tsc → minimal App shell
+Harness bugs found+fixed by running (all committed):
+- skill tiers -> copy local skill into .claude/skills (npx skills add lands in .agents, not loaded)
+- name the target file in the prompt (empty stub gave no signal)
+- copy eval.ts in as eval.test.ts (vitest discovery)
+- AI scenarios: shim SDK modules + vue-tsc-only build + noImplicitAny off (ai@7 churn)
+- App.vue shell no longer renders <Subject/> (required-prop components failed vue-tsc)
+- reactive-props eval.ts: strip comments before the withDefaults negative (skill-comment false positive)
 
-Known eval-design issues NOT fixed (out of chosen scope):
-- reactive-props: pattern is now default model behavior (baseline passes); `not /withDefaults/`
-  assertion is brittle — skill-informed agents mention withDefaults in a comment and fail.
-- vue-3-5-helpers: all tiers fail though a hand-written correct useId component builds + passes;
-  needs a --verbose run to capture generated output and the real cause.
-- structured-output/s1, tool-calling/s3: fail all tiers — brittle/scenario-specific assertions.
+with-skill (implicit) is nondeterministic headless; with-agents-md embeds SKILL.md only
+(no reference files), so it is the weakest skill tier.
+
 
 ## Out of scope — remaining follow-up
 
