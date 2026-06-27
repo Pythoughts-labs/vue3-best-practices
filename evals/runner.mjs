@@ -13,7 +13,7 @@
 // The LLM tiers shell out to the `claude` CLI and consume API budget; --dry does not.
 
 import {
-  readFileSync, writeFileSync, existsSync, mkdtempSync, cpSync, rmSync, readdirSync,
+  readFileSync, writeFileSync, existsSync, mkdtempSync, mkdirSync, cpSync, rmSync, readdirSync,
 } from "node:fs";
 import { join, dirname, resolve } from "node:path";
 import { tmpdir } from "node:os";
@@ -24,8 +24,8 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SUITES = join(ROOT, "evals", "suites", "skills");
 const TIERS = ["baseline", "with-skill", "with-skill-prompt", "with-agents-md"];
 const VALID_MODELS = ["haiku", "sonnet", "opus"];
-// Skill content source for `npx skills add`; override for non-published setups.
-const SKILL_SOURCE = process.env.VUE_SKILLS_SOURCE || "Pythoughts-labs/vue3-best-practices";
+// Local skills directory copied into each scenario's .claude/skills for the skill tiers.
+const SKILL_SOURCE_DIR = process.env.VUE_SKILLS_DIR || join(ROOT, "skills");
 
 // ---- args ---------------------------------------------------------------
 const argv = process.argv.slice(2);
@@ -82,7 +82,11 @@ function scenariosOf(refDir) {
 // ---- shell helpers ------------------------------------------------------
 function run(cmd, args, cwd) {
   vlog(`$ ${cmd} ${args.join(" ")}  (cwd=${cwd})`);
-  execFileSync(cmd, args, { cwd, stdio: flags.verbose ? "inherit" : "pipe" });
+  // stdin ignored: claude -p otherwise blocks ~3s waiting for piped input.
+  execFileSync(cmd, args, {
+    cwd,
+    stdio: flags.verbose ? ["ignore", "inherit", "inherit"] : ["ignore", "pipe", "pipe"],
+  });
 }
 function tryRun(cmd, args, cwd) {
   try {
@@ -114,11 +118,15 @@ function setupTier(tmp, tier, cfg) {
     writeFileSync(join(tmp, "AGENTS.md"), body);
     return;
   }
-  // with-skill / with-skill-prompt: install the skill(s)
-  for (const _ of cfg.skills) {
-    if (!tryRun("npx", ["--yes", "skills", "add", SKILL_SOURCE], tmp)) {
-      throw new Error(`skill install failed (source: ${SKILL_SOURCE})`);
-    }
+  // with-skill / with-skill-prompt: place the skill where Claude Code discovers it.
+  // (`npx skills add` installs to .agents/skills, which `claude -p` does not load;
+  // copying the local skill into .claude/skills tests the current skill content.)
+  const skillsDir = join(tmp, ".claude", "skills");
+  mkdirSync(skillsDir, { recursive: true });
+  for (const s of cfg.skills) {
+    const src = join(SKILL_SOURCE_DIR, s);
+    if (!existsSync(src)) throw new Error(`skill "${s}" not found at ${src}`);
+    cpSync(src, join(skillsDir, s), { recursive: true });
   }
 }
 
@@ -131,7 +139,8 @@ function promptFor(tier, cfg) {
 
 // Invoke Claude Code headless to satisfy the query in the workdir.
 function generate(tmp, tier, cfg) {
-  const prompt = promptFor(tier, cfg);
+  // Name the target file(s); the empty stub gives the agent no signal otherwise.
+  const prompt = `${promptFor(tier, cfg)}\n\nImplement your solution in this existing file: ${cfg.files.join(", ")}. Do not create additional component files.`;
   run("claude", ["-p", prompt, "--model", flags.model, "--permission-mode", "acceptEdits"], tmp);
 }
 
@@ -141,8 +150,9 @@ function installAndBuild(tmp) {
   run("pnpm", ["run", "build"], tmp); // vue-tsc --noEmit && vite build
 }
 function runEvalTest(tmp, scenarioDir) {
-  cpSync(join(scenarioDir, "eval.ts"), join(tmp, "eval.ts"));
-  return tryRun("pnpm", ["exec", "vitest", "run", "eval.ts"], tmp);
+  // Copy in as *.test.ts so vitest's default include discovers it.
+  cpSync(join(scenarioDir, "eval.ts"), join(tmp, "eval.test.ts"));
+  return tryRun("pnpm", ["exec", "vitest", "run", "eval.test.ts"], tmp);
 }
 
 // One generate→build→test attempt. Returns true on pass.
